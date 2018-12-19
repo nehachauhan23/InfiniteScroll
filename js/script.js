@@ -24,7 +24,8 @@ function showImage() {
 function nextImage(){
 
 }
-$('.next').click(function(){
+$('a.next').click(function(){
+  console.log("HELLO"+this);
   nextImage(1);
 });
 $('.prev').click(function(){
@@ -32,8 +33,10 @@ $('.prev').click(function(){
 });
 
 $(document).ready(function(){
+  var clicked_img;
   $('.card-img-top').click(function(){
     var $this = $(this);
+    clicked_img  = $this;
     var img = $this.attr('src');
     var title = $this.siblings('.card-body').find('.card-title').text();
     var desc = $this.siblings('.card-body').find('.card-text').text();
@@ -42,6 +45,28 @@ $(document).ready(function(){
     $('#modal-img').attr('src',img);
     $('#myModal').modal('show');
   });
+  $('a.next').click(function(){
+      next(clicked_img,1);
+  });
+  $('a.prev').click(function(){
+      next(clicked_img,0);
+  });
+  function next(current,forward){
+    if(forward)
+      var next = current.parent().next();
+    else
+      var next = current.parent().prev();
+
+    var img = next.find('.card-img-top').attr('src');
+    var title = next.find('.card-body > .card-title').text();
+    var desc = next.find('.card-body > .card-text').text();
+    $('#img-title').text(title);
+    $('#img-desc').text(desc);
+    $('#modal-img').attr('src',img);
+
+    clicked_img = next.find('.card-img-top');
+    console.log(clicked_img.attr('src'));
+  }
 });
 
 // Preview ends here
