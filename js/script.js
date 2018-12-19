@@ -18,23 +18,9 @@ $('#myModal').on('shown.bs.modal', function () {
   $('body').css('overflow', 'hidden');
 });
 
-function showImage() {
-
-}
-function nextImage(){
-
-}
-$('a.next').click(function(){
-  console.log("HELLO"+this);
-  nextImage(1);
-});
-$('.prev').click(function(){
-  nextImage(-1);
-});
-
 $(document).ready(function(){
   var clicked_img;
-  $('.card-img-top').click(function(){
+  $(document).on('click','.card-img-top' ,function(){
     var $this = $(this);
     clicked_img  = $this;
     var img = $this.attr('src');
@@ -45,10 +31,11 @@ $(document).ready(function(){
     $('#modal-img').attr('src',img);
     $('#myModal').modal('show');
   });
-  $('a.next').click(function(){
+  $(document).on('click','a.next' ,function(){
       next(clicked_img,1);
+
   });
-  $('a.prev').click(function(){
+  $(document).on('click','a.prev' ,function(){
       next(clicked_img,0);
   });
   function next(current,forward){
@@ -57,15 +44,19 @@ $(document).ready(function(){
     else
       var next = current.parent().prev();
 
-    var img = next.find('.card-img-top').attr('src');
-    var title = next.find('.card-body > .card-title').text();
-    var desc = next.find('.card-body > .card-text').text();
-    $('#img-title').text(title);
-    $('#img-desc').text(desc);
-    $('#modal-img').attr('src',img);
+    if(next.length){
+      var img = next.find('.card-img-top').attr('src');
+      var title = next.find('.card-body > .card-title').text();
+      var desc = next.find('.card-body > .card-text').text();
+      $('#img-title').text(title);
+      $('#img-desc').text(desc);
+      $('#modal-img').attr('src',img);
 
-    clicked_img = next.find('.card-img-top');
-    console.log(clicked_img.attr('src'));
+      clicked_img = next.find('.card-img-top');
+    }
+    else{
+        $('#myModal').modal('hide');
+    }
   }
 });
 
